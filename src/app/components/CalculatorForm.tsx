@@ -126,7 +126,7 @@ export default function CalculatorForm() {
             disabled
             type="number"
             value={positionSize.toFixed(2)}
-            className="w-136 p-2 border rounded bg-yellow-100"
+            className="w-full p-2 border rounded bg-yellow-100"
           />
         </label>
       </div>
