@@ -13,11 +13,11 @@ interface computation {
 
 export default function CalculatorForm() {
   const leverages = [2, 3, 5, 10, 15, 20, 30, 50, 100, 125];
-  const [initialCapital, setInitialCapital] = useState<number>(0);
-  const [riskPerTrade, setRiskPerTrade] = useState<number>(0);
-  const [numberOfTrades, setNumberOfTrades] = useState<number>(0);
-  const [stopLossPercent, setStopLossPercent] = useState<number>(0);
-  const [takeProfitPercent, setTakeProfitPercent] = useState<number>(0);
+  const [initialCapital, setInitialCapital] = useState<number>();
+  const [riskPerTrade, setRiskPerTrade] = useState<number>();
+  const [numberOfTrades, setNumberOfTrades] = useState<number>();
+  const [stopLossPercent, setStopLossPercent] = useState<number>();
+  const [takeProfitPercent, setTakeProfitPercent] = useState<number>();
 
   const lossPerTrade = useMemo(() => {
     if (!initialCapital || !riskPerTrade || !numberOfTrades) return 0;
@@ -134,10 +134,10 @@ export default function CalculatorForm() {
       <table className="w-full border-collapse border border-gray-400 text-center">
         <thead className="bg-blue-100 text-gray-800 font-semibold">
           <tr>
-            <th className="border border-gray-300 p-2">Leverage</th>
+            <th className="border border-gray-300 p-2">Lev</th>
             <th className="border border-gray-300 p-2">Margin</th>
-            <th className="border border-gray-300 p-2">Stop Loss (%)</th>
-            <th className="border border-gray-300 p-2">Take Profit (%)</th>
+            <th className="border border-gray-300 p-2">SL (%)</th>
+            <th className="border border-gray-300 p-2">TP (%)</th>
             <th className="border border-gray-300 p-2">Profit ($)</th>
           </tr>
         </thead>
@@ -149,7 +149,8 @@ export default function CalculatorForm() {
               else if (data.leverage <= 50) rowColor = "bg-yellow-100";
               else rowColor = "bg-red-100";
 
-              const isMarginTooHigh = data.margin > initialCapital;
+              const isMarginTooHigh =
+                initialCapital && data.margin > initialCapital;
 
               return (
                 <tr key={data.key} className={rowColor}>
