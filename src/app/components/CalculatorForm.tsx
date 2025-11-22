@@ -52,7 +52,7 @@ export default function CalculatorForm() {
   return (
     <div className="max-w-xl mx-auto my-10 p-4 bg-white rounded-2xl shadow-md space-y-6">
       <div className="flex justify-center items-center">
-        <h1 className="text-xl font-bold">AIM Tycoon Calculator</h1>
+        <h1 className="text-xl font-bold">Futures Trading Calculator</h1>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
