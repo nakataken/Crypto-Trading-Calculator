@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trading Calculator",
+  title: "Position Size Calculator",
   description: "Crypto Trading Calculator designed for RRR 2:1",
 };
 

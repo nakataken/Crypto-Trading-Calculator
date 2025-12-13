@@ -13,11 +13,11 @@ interface computation {
 
 export default function CalculatorForm() {
   const leverages = [2, 3, 5, 10, 15, 20, 30, 50, 100, 125];
-  const [initialCapital, setInitialCapital] = useState<number>();
-  const [riskPerTrade, setRiskPerTrade] = useState<number>();
-  const [numberOfTrades, setNumberOfTrades] = useState<number>();
-  const [stopLossPercent, setStopLossPercent] = useState<number>();
-  const [takeProfitPercent, setTakeProfitPercent] = useState<number>();
+  const [initialCapital, setInitialCapital] = useState<number>(0);
+  const [riskPerTrade, setRiskPerTrade] = useState<number>(0);
+  const [numberOfTrades, setNumberOfTrades] = useState<number>(0);
+  const [stopLossPercent, setStopLossPercent] = useState<number>(0);
+  const [takeProfitPercent, setTakeProfitPercent] = useState<number>(0);
 
   const lossPerTrade = useMemo(() => {
     if (!initialCapital || !riskPerTrade || !numberOfTrades) return 0;
@@ -52,7 +52,7 @@ export default function CalculatorForm() {
   return (
     <div className="max-w-xl mx-auto my-10 p-4 bg-white rounded-2xl shadow-md space-y-6">
       <div className="flex justify-center items-center">
-        <h1 className="text-xl font-bold">Futures Trading Calculator</h1>
+        <h1 className="text-xl font-bold">Position Size Calculator</h1>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -119,7 +119,8 @@ export default function CalculatorForm() {
             step="any"
           />
         </label>
-
+      </div>
+      <div>
         <label>
           Position Size ($)
           <input
