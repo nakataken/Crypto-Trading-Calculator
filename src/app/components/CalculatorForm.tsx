@@ -13,38 +13,42 @@ interface computation {
 
 export default function CalculatorForm() {
   const leverages = [2, 3, 5, 10, 15, 20, 30, 50, 100, 125];
-  const [initialCapital, setInitialCapital] = useState<number>(0);
-  const [riskPerTrade, setRiskPerTrade] = useState<number>(0);
-  const [numberOfTrades, setNumberOfTrades] = useState<number>(0);
-  const [stopLossPercent, setStopLossPercent] = useState<number>(0);
-  const [takeProfitPercent, setTakeProfitPercent] = useState<number>(0);
+  const [initialCapital, setInitialCapital] = useState<string>("");
+  const [riskPerTrade, setRiskPerTrade] = useState<string>("");
+  const [numberOfTrades, setNumberOfTrades] = useState<string>("");
+  const [stopLossPercent, setStopLossPercent] = useState<string>("");
+  const [takeProfitPercent, setTakeProfitPercent] = useState<string>("");
 
   const lossPerTrade = useMemo(() => {
-    if (!initialCapital || !riskPerTrade || !numberOfTrades) return 0;
-    return (initialCapital * (riskPerTrade * 0.01)) / numberOfTrades;
+    const capital = Number(initialCapital);
+    const risk = Number(riskPerTrade);
+    const trades = Number(numberOfTrades);
+
+    if (!capital || !risk || !trades) return 0;
+
+    return (capital * (risk * 0.01)) / trades;
   }, [initialCapital, riskPerTrade, numberOfTrades]);
 
   const positionSize = useMemo(() => {
-    if (!lossPerTrade || !stopLossPercent) return 0;
-    return lossPerTrade / (stopLossPercent * 0.01);
+    const sl = Number(stopLossPercent);
+    if (!lossPerTrade || !sl) return 0;
+    return lossPerTrade / (sl * 0.01);
   }, [lossPerTrade, stopLossPercent]);
 
-  const calculatedTable = useMemo<computation[]>(() => {
-    if (!positionSize || !stopLossPercent || !takeProfitPercent) return [];
+  const calculatedTable = useMemo(() => {
+    const sl = Number(stopLossPercent);
+    const tp = Number(takeProfitPercent);
+    if (!positionSize || !sl || !tp) return [];
 
     return leverages.map((lev, i) => {
       const margin = positionSize / lev;
-      const stopLoss = stopLossPercent * lev;
-      const takeProfit = takeProfitPercent * lev;
-      const profit = takeProfit * 0.01 * margin;
-
       return {
         key: i,
         leverage: lev,
         margin,
-        stopLoss,
-        takeProfit,
-        profit,
+        stopLoss: sl * lev,
+        takeProfit: tp * lev,
+        profit: tp * lev * 0.01 * margin,
       };
     });
   }, [leverages, positionSize, stopLossPercent, takeProfitPercent]);
@@ -61,7 +65,7 @@ export default function CalculatorForm() {
           <input
             type="number"
             value={initialCapital}
-            onChange={(e) => setInitialCapital(+e.target.value)}
+            onChange={(e) => setInitialCapital(e.target.value)}
             className="w-full p-2 border rounded"
             step="any"
           />
@@ -72,7 +76,7 @@ export default function CalculatorForm() {
           <input
             type="number"
             value={riskPerTrade}
-            onChange={(e) => setRiskPerTrade(+e.target.value)}
+            onChange={(e) => setRiskPerTrade(e.target.value)}
             className="w-full p-2 border rounded"
             step="any"
           />
@@ -83,7 +87,7 @@ export default function CalculatorForm() {
           <input
             type="number"
             value={numberOfTrades}
-            onChange={(e) => setNumberOfTrades(+e.target.value)}
+            onChange={(e) => setNumberOfTrades(e.target.value)}
             className="w-full p-2 border rounded"
           />
         </label>
@@ -103,7 +107,7 @@ export default function CalculatorForm() {
           <input
             type="number"
             value={stopLossPercent}
-            onChange={(e) => setStopLossPercent(+e.target.value)}
+            onChange={(e) => setStopLossPercent(e.target.value)}
             className="w-full p-2 border rounded"
             step="any"
           />
@@ -114,7 +118,7 @@ export default function CalculatorForm() {
           <input
             type="number"
             value={takeProfitPercent}
-            onChange={(e) => setTakeProfitPercent(+e.target.value)}
+            onChange={(e) => setTakeProfitPercent(e.target.value)}
             className="w-full p-2 border rounded"
             step="any"
           />
@@ -151,7 +155,7 @@ export default function CalculatorForm() {
               else rowColor = "bg-red-100";
 
               const isMarginTooHigh =
-                initialCapital && data.margin > initialCapital;
+                initialCapital && Number(data.margin) > Number(initialCapital);
 
               return (
                 <tr key={data.key} className={rowColor}>
